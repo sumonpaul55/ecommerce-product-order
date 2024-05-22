@@ -2,8 +2,8 @@ import mongoose, { model } from "mongoose";
 const { Schema } = mongoose;
 
 const ProductVariantsSchema = new Schema({
-  type: String,
-  size: String,
+  type: { type: String, trim: true },
+  size: { type: String, trim: true },
   _id: Boolean,
 });
 
@@ -14,10 +14,10 @@ const InventorySchema = new Schema({
 });
 
 const ProductSchema = new Schema({
-  name: { type: String, required: true },
-  description: { type: String, required: true },
-  price: { type: Number, required: true },
-  category: { type: String, required: true },
+  name: { type: String, required: true, trim: true },
+  description: { type: String, required: true, trim: true },
+  price: { type: Number, required: true, trim: true },
+  category: { type: String, required: true, trim: true },
   tags: [{ type: String }],
   variants: [{ type: ProductVariantsSchema }],
   inventory: { type: InventorySchema },

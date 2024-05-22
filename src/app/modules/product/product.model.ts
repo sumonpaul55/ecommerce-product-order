@@ -13,6 +13,7 @@ const InventorySchema = new Schema({
   _id: Boolean,
 });
 
+// product schema
 const ProductSchema = new Schema({
   name: { type: String, required: true, trim: true },
   description: { type: String, required: true, trim: true },

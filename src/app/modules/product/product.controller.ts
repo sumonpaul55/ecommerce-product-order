@@ -18,7 +18,7 @@ const createProduct = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: "Something went wrong",
-      error: error.issues.map((item: { message: any }) => item.message),
+      error: error.issues.map((item: { message: unknown }) => item.message),
     });
   }
 };

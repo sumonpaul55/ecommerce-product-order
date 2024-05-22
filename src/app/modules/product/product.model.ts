@@ -4,11 +4,13 @@ const { Schema } = mongoose;
 const ProductVariantsSchema = new Schema({
   type: String,
   size: String,
+  _id: Boolean,
 });
 
 const InventorySchema = new Schema({
   quantity: Number,
   inStock: Boolean,
+  _id: Boolean,
 });
 
 const ProductSchema = new Schema({

@@ -28,7 +28,8 @@ const createProduct = async (req: Request, res: Response) => {
 const getAllProduct = async (req: Request, res: Response) => {
   try {
     // data sent to product service for created db
-    const result = await productServices.getPorducts();
+    const result = await productServices.getAllPorducts();
+
     res.status(200).json({
       success: true,
       message: "Products fetched successfully!",
@@ -43,7 +44,27 @@ const getAllProduct = async (req: Request, res: Response) => {
   }
 };
 
+// get porduct by id
+const getProductByid = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.productId;
+    const result = await productServices.getProductUsinId(id);
+    res.status(200).json({
+      success: true,
+      message: "Product fetched successfully!",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+      error: error.issues.map((item: { message: unknown }) => item.message) || "Internal Server Error",
+    });
+  }
+};
+
 export const productController = {
   createProduct,
   getAllProduct,
+  getProductByid,
 };

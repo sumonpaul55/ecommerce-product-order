@@ -1,5 +1,6 @@
 import { TProduct } from "./product.interface";
 import { Product } from "./product.model";
+import productValidationSchema from "./product.validation";
 
 // create product
 const createProductDb = async (productData: TProduct) => {
@@ -17,9 +18,26 @@ const getProductUsinId = async (id: string) => {
   const product = await Product.findById(id);
   return product;
 };
+// find one and update Product
+const updateProductById = async (id: string, data: TProduct) => {
+  const updatedData = await Product.findByIdAndUpdate(id, data, {
+    new: true,
+    runValidators: true,
+    upsert: true,
+  });
+  return updatedData;
+};
+
+// delete producct
+const deleteProduct = async (id: string) => {
+  const productDeleted = await Product.findByIdAndDelete(id);
+  return productDeleted;
+};
 
 export const productServices = {
   createProductDb,
   getAllPorducts,
   getProductUsinId,
+  updateProductById,
+  deleteProduct,
 };

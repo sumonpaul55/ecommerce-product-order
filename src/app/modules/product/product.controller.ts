@@ -49,6 +49,7 @@ const getProductByid = async (req: Request, res: Response) => {
   try {
     const id = req.params.productId;
     const result = await productServices.getProductUsinId(id);
+
     res.status(200).json({
       success: true,
       message: "Product fetched successfully!",
@@ -63,8 +64,49 @@ const getProductByid = async (req: Request, res: Response) => {
   }
 };
 
+// finde product and Update
+const findAndUpdate = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.productId;
+    const validteData = productValidationSchema.parse(req.body);
+
+    const result = await productServices.updateProductById(id, validteData);
+    res.status(200).json({
+      success: true,
+      message: "Product updated successfully!",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: "Update Failed, Internel Server error",
+      error: error.issues.map((item: { message: unknown }) => item.message) || "Internal Server Error",
+    });
+  }
+};
+// product delete
+const deleteProduct = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.productId;
+    productServices.deleteProduct(id);
+    res.status(200).json({
+      success: true,
+      message: "Product Deleted Successully !",
+      data: null,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+      error: error.issues.map((item: { message: unknown }) => item.message) || "Internal Server Error",
+    });
+  }
+};
+
 export const productController = {
   createProduct,
   getAllProduct,
   getProductByid,
+  findAndUpdate,
+  deleteProduct,
 };

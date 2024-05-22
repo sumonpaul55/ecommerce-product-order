@@ -1,7 +1,6 @@
 export type TProductVariants = {
-  size: number;
-  color: string;
-  style: string;
+  type: string;
+  size: string;
 };
 
 export type TInventory = {

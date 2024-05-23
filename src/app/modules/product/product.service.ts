@@ -1,6 +1,5 @@
 import { TProduct } from "./product.interface";
 import { Product } from "./product.model";
-import productValidationSchema from "./product.validation";
 
 // create product
 const createProductDb = async (productData: TProduct) => {
@@ -33,6 +32,15 @@ const deleteProduct = async (id: string) => {
   const productDeleted = await Product.findByIdAndDelete(id);
   return productDeleted;
 };
+// find product using search term
+const searchedProduct = async (searchTerm: string) => {
+  const searchedText = new RegExp(searchTerm, "i");
+
+  const products = await Product.find({
+    $or: [{ name: searchedText }, { category: searchTerm }],
+  });
+  return products;
+};
 
 export const productServices = {
   createProductDb,
@@ -40,4 +48,5 @@ export const productServices = {
   getProductUsinId,
   updateProductById,
   deleteProduct,
+  searchedProduct,
 };

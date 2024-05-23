@@ -12,22 +12,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const app_1 = __importDefault(require("./app"));
-const mongoose_1 = __importDefault(require("mongoose"));
-const config_1 = __importDefault(require("./app/config"));
-// getting-started.js
-function main() {
-    return __awaiter(this, void 0, void 0, function* () {
-        yield mongoose_1.default.connect(config_1.default.mongo_uri);
-        try {
-            app_1.default.listen(config_1.default.port, () => {
-                console.log(`Example app listening on port ${config_1.default.port}`);
-            });
-        }
-        catch (error) {
-            console.log(error);
-        }
-        // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
-    });
-}
-main();
+exports.routeController = void 0;
+const order_validation_1 = __importDefault(require("./order.validation"));
+const order_service_1 = require("./order.service");
+const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const order = req.body;
+        const validateOrder = order_validation_1.default.parse(order);
+        const result = yield order_service_1.orderService.createOrderDb(validateOrder);
+        res.status(200).json({
+            success: true,
+            message: "Order created successfully!",
+            data: result,
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Something went wrong",
+            error: error.issues.map((item) => item.message),
+        });
+    }
+});
+exports.routeController = {
+    createOrder,
+};

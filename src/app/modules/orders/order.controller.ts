@@ -29,8 +29,8 @@ const getOrders = async (req: Request, res: Response) => {
     const result = await orderService.getOrdersdb(email);
     res.status(200).json({
       success: true,
-      message: "Orders fetched successfully!",
-      data: result.length ? result : "Order not found",
+      message: result.length ? "Orders fetched successfully!" : "Order not found",
+      data: result.length ? result : null,
     });
   } catch (error: any) {
     res.status(500).json({

@@ -13,7 +13,11 @@ app.use("/api", ProductRoute);
 app.use("/api", OrderRoute);
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World!");
+  res.status(200).json("Hello World!, Welcome to Ecommerce API😁");
+});
+
+app.get("/*", (req: Request, res: Response) => {
+  res.status(200).json("Route not found");
 });
 
 export default app;

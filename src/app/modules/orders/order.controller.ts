@@ -7,11 +7,11 @@ const createOrder = async (req: Request, res: Response) => {
   try {
     const order = req.body;
     const validateOrder = orderValidationSchema.parse(order);
-    const result = await orderService.createOrderDb(validateOrder);
+    const result: any = await orderService.createOrderDb(validateOrder);
     res.status(200).json({
-      success: true,
-      message: "Order created successfully!",
-      data: result,
+      success: result.success,
+      message: result.message,
+      data: result.data,
     });
   } catch (error: any) {
     res.status(500).json({
@@ -30,7 +30,7 @@ const getOrders = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: "Orders fetched successfully!",
-      data: result,
+      data: result.length ? result : "Order not found",
     });
   } catch (error: any) {
     res.status(500).json({

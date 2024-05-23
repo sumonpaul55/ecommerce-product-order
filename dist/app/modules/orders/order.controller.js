@@ -15,15 +15,35 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.routeController = void 0;
 const order_validation_1 = __importDefault(require("./order.validation"));
 const order_service_1 = require("./order.service");
+// create orders
 const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const order = req.body;
         const validateOrder = order_validation_1.default.parse(order);
         const result = yield order_service_1.orderService.createOrderDb(validateOrder);
         res.status(200).json({
+            success: result.success,
+            message: result.message,
+            data: result.data,
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Something went wrong",
+            error: error.issues.map((item) => item.message),
+        });
+    }
+});
+// get all orders
+const getOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email } = req.query;
+        const result = yield order_service_1.orderService.getOrdersdb(email);
+        res.status(200).json({
             success: true,
-            message: "Order created successfully!",
-            data: result,
+            message: result.length ? "Orders fetched successfully!" : "Order not found",
+            data: result.length ? result : null,
         });
     }
     catch (error) {
@@ -36,4 +56,5 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.routeController = {
     createOrder,
+    getOrders,
 };

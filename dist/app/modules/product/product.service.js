@@ -17,9 +17,17 @@ const createProductDb = (productData) => __awaiter(void 0, void 0, void 0, funct
     return product;
 });
 // get all product
-const getAllPorducts = () => __awaiter(void 0, void 0, void 0, function* () {
-    const product = yield product_model_1.Product.find();
-    return product;
+const getAllPorducts = (searchTerm) => __awaiter(void 0, void 0, void 0, function* () {
+    if (searchTerm) {
+        const Searchedproducts = yield product_model_1.Product.find({
+            $or: [{ name: { $regex: searchTerm } }, { category: { $regex: searchTerm } }],
+        });
+        return Searchedproducts;
+    }
+    else {
+        const product = yield product_model_1.Product.find();
+        return product;
+    }
 });
 // get one product using id
 const getProductUsinId = (id) => __awaiter(void 0, void 0, void 0, function* () {
@@ -40,19 +48,10 @@ const deleteProduct = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const productDeleted = yield product_model_1.Product.findByIdAndDelete(id);
     return productDeleted;
 });
-// find product using search term
-const searchedProduct = (searchTerm) => __awaiter(void 0, void 0, void 0, function* () {
-    const searchedText = new RegExp(searchTerm, "i");
-    const products = yield product_model_1.Product.find({
-        $or: [{ name: searchedText }, { category: searchTerm }],
-    });
-    return products;
-});
 exports.productServices = {
     createProductDb,
     getAllPorducts,
     getProductUsinId,
     updateProductById,
     deleteProduct,
-    searchedProduct,
 };

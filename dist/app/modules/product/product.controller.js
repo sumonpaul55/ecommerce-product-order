@@ -39,9 +39,11 @@ const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 });
 // get all porduct
 const getAllProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
         // data sent to product service for created db
-        const result = yield product_service_1.productServices.getAllPorducts();
+        const searchTerm = req.query.searchTerm;
+        const result = yield product_service_1.productServices.getAllPorducts(searchTerm);
         res.status(200).json({
             success: true,
             message: "Products fetched successfully!",
@@ -52,7 +54,7 @@ const getAllProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         res.status(500).json({
             success: false,
             message: "Something went wrong",
-            error: error.issues.map((item) => item.message),
+            error: (_a = error.issues) === null || _a === void 0 ? void 0 : _a.map((item) => item.message),
         });
     }
 });
@@ -115,39 +117,35 @@ const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 // search product
-const findSearchProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { searchTerm } = req.query;
-        console.log("something for test", searchTerm);
-        if (!searchTerm || typeof searchTerm !== "string") {
-            res.status(404).json({
-                success: false,
-                message: "searchTerm query parameter is required and should be a string",
-            });
-        }
-        else {
-            const result = yield product_service_1.productServices.searchedProduct(searchTerm);
-            res.status(200).json({
-                success: true,
-                message: `Products matching search term ${searchTerm} fetched successfully!`,
-                data: result,
-            });
-        }
-    }
-    catch (error) {
-        console.log("error theke");
-        res.status(500).json({
-            success: false,
-            message: "Something Error occured",
-            error: error.issues.map((item) => item.message) || "Internal Server Error",
-        });
-    }
-});
+// const findSearchProduct = async (req: Request, res: Response) => {
+//   console.log(req.query);
+//   try {
+//     const { searchTerm }: any = req.query;
+//     if (!searchTerm || typeof searchTerm !== "string") {
+//       res.status(404).json({
+//         success: false,
+//         message: "searchTerm query parameter is required",
+//       });
+//     }
+//     const result = await productServices.searchedProduct(searchTerm);
+//     res.status(200).json({
+//       success: true,
+//       message: `Products matching search term ${searchTerm} fetched successfully!`,
+//       data: result,
+//     });
+//   } catch (error: any) {
+//     console.log("error theke");
+//     res.status(500).json({
+//       success: false,
+//       message: "Something Error occured",
+//       error: error.issues.map((item: { message: unknown }) => item.message) || "Internal Server Error",
+//     });
+//   }
+// };
 exports.productController = {
     createProduct,
     getAllProduct,
     getProductByid,
     findAndUpdate,
     deleteProduct,
-    findSearchProduct,
 };

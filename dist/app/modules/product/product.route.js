@@ -12,5 +12,4 @@ exports.router.get("/products", product_controller_1.productController.getAllPro
 exports.router.get("/products/:productId", product_controller_1.productController.getProductByid);
 exports.router.put("/products/:productId", product_controller_1.productController.findAndUpdate);
 exports.router.delete("/products/:productId", product_controller_1.productController.deleteProduct);
-exports.router.get("/products", product_controller_1.productController.findSearchProduct);
 exports.ProductRoute = exports.router;

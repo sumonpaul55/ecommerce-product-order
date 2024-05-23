@@ -15,6 +15,9 @@ app.use(express_1.default.json());
 app.use("/api", product_route_1.ProductRoute);
 app.use("/api", order_route_1.OrderRoute);
 app.get("/", (req, res) => {
-    res.send("Hello World!");
+    res.status(200).json("Hello World!, Welcome to Ecommerce API😁");
+});
+app.get("/*", (req, res) => {
+    res.status(200).json("Route not found");
 });
 exports.default = app;
